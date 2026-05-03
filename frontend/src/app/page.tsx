@@ -391,8 +391,10 @@ export default function IncidentCommander() {
                   View Analysis
                 </button>
               </div>
-            </>
-          ) : activeTab === 'analysis' ? (
+            </div>
+          </div>
+        </>
+      ) : activeTab === 'analysis' ? (
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
               <div className="glass rounded-2xl p-8 space-y-6">
                 <h3 className="text-xl font-bold flex items-center gap-3">
