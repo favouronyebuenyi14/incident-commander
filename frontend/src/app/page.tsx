@@ -52,6 +52,7 @@ export default function IncidentCommander() {
   const [timeline, setTimeline] = useState(mockTimeline);
   const [selectedAction, setSelectedAction] = useState<{ label: string } | null>(null);
   const [approvalStep, setApprovalStep] = useState('idle');
+  const [currentView, setCurrentView] = useState<'dashboard' | 'history' | 'integrations' | 'console'>('dashboard');
 
   const startApproval = (action: any) => {
     setSelectedAction(action);
@@ -71,9 +72,38 @@ export default function IncidentCommander() {
         id: Date.now(), 
         time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }), 
         type: 'agent', 
-        message: `Action Executed: ${selectedAction?.label}`, 
+        message: `Action Executed: ${selectedAction?.label}`,
         status: 'resolved' 
       }
+    ]);
+  };
+
+  // Resolve incident handler – marks incident as resolved and adds entry to timeline
+  const handleResolve = () => {
+    setStatus('resolved');
+    setTimeline(prev => [
+      ...prev,
+      {
+        id: Date.now(),
+        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+        type: 'agent',
+        message: 'Incident resolved by user',
+        status: 'resolved',
+      },
+    ]);
+  };
+
+  // Mock Slack sync – adds a temporary sync entry
+  const handleSlackSync = () => {
+    setTimeline(prev => [
+      ...prev,
+      {
+        id: Date.now(),
+        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+        type: 'agent',
+        message: 'Slack sync triggered',
+        status: 'info',
+      },
     ]);
   };
 
@@ -107,10 +137,10 @@ export default function IncidentCommander() {
         </div>
 
         <nav className="flex-1 px-4 py-6 space-y-2">
-          <SidebarItem icon={<Activity size={20} />} label="Active Incidents" active count={1} />
-          <SidebarItem icon={<History size={20} />} label="History" />
-          <SidebarItem icon={<Cpu size={20} />} label="Integrations" />
-          <SidebarItem icon={<Terminal size={20} />} label="Console" />
+          <SidebarItem icon={<Activity size={20} />} label="Active Incidents" active={currentView === 'dashboard'} count={1} onClick={() => setCurrentView('dashboard')} />
+          <SidebarItem icon={<History size={20} />} label="History" active={currentView === 'history'} onClick={() => setCurrentView('history')} />
+          <SidebarItem icon={<Cpu size={20} />} label="Integrations" active={currentView === 'integrations'} onClick={() => setCurrentView('integrations')} />
+          <SidebarItem icon={<Terminal size={20} />} label="Console" active={currentView === 'console'} onClick={() => setCurrentView('console')} />
         </nav>
 
         <div className="p-4 border-t border-slate-800/50">
@@ -138,16 +168,18 @@ export default function IncidentCommander() {
           </div>
 
           <div className="flex items-center gap-4">
-            <button className="px-4 py-2 bg-slate-800/50 hover:bg-slate-800 border border-slate-700/50 rounded-lg text-sm transition-colors flex items-center gap-2">
-              <MessageSquare size={16} />
-              Slack Sync
+            <button onClick={handleSlackSync} className="px-4 py-2 bg-slate-800/50 hover:bg-slate-800 border border-slate-700/50 rounded-lg text-sm transition-colors flex items-center gap-2">
+                <MessageSquare size={16} />
+                Slack Sync
             </button>
-            <button className="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-lg text-sm font-medium transition-all glow-blue">
-              Resolve Incident
+            <button onClick={handleResolve} className="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-lg text-sm font-medium transition-all glow-blue">
+                Resolve Incident
             </button>
           </div>
         </header>
 
+        {currentView === 'dashboard' && (
+        <>
         <div className="px-8 border-b border-slate-800/50 flex gap-8 bg-[#0a0a0c]/50 backdrop-blur-sm">
           {['overview', 'analysis', 'logs'].map(tab => (
             <button 
@@ -160,7 +192,10 @@ export default function IncidentCommander() {
               {tab}
             </button>
           ))}
-        </div>
+          {/* Button to jump to analysis from any view */}
+          <button onClick={() => { setCurrentView('dashboard'); setActiveTab('analysis'); }} className="ml-4 px-3 py-1 bg-slate-700 hover:bg-slate-600 text-sm rounded">
+            View Analysis
+          </button>        </div>
 
         <div className="flex-1 overflow-y-auto p-8 space-y-8">
           {activeTab === 'overview' && (
@@ -339,15 +374,86 @@ export default function IncidentCommander() {
               </motion.div>
             </motion.div>
           )}
+
+          {/* Main view switch */}
+          {currentView === 'dashboard' && (
+            <>{/* existing dashboard content stays here – nothing to change */}</>
+          )}
+          {currentView === 'history' && (
+            <div className="p-8 space-y-6">
+              <h2 className="text-2xl font-bold text-slate-200">Incident History</h2>
+              <ul className="space-y-4">
+                {/* Mock history items – replace with real data later */}
+                <li className="bg-slate-800/50 p-4 rounded-lg">
+                  <div className="flex justify-between items-center">
+                    <span className="font-medium text-slate-100">INC-2024-0501</span>
+                    <span className="text-xs text-slate-400">Resolved</span>
+                  </div>
+                  <p className="text-sm text-slate-400 mt-1">Database latency spike resolved by scaling.</p>
+                </li>
+                <li className="bg-slate-800/50 p-4 rounded-lg">
+                  <div className="flex justify-between items-center">
+                    <span className="font-medium text-slate-100">INC-2024-0489</span>
+                    <span className="text-xs text-slate-400">Resolved</span>
+                  </div>
+                  <p className="text-sm text-slate-400 mt-1">High error rate in auth service mitigated.</p>
+                </li>
+              </ul>
+            </div>
+          )}
+          {currentView === 'integrations' && (
+            <div className="p-8 space-y-6">
+              <h2 className="text-2xl font-bold text-slate-200">Integrations</h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="glass rounded-xl p-6 flex items-center gap-4">
+                  <Database size={24} className="text-blue-500" />
+                  <div>
+                    <p className="font-medium text-slate-100">Datadog</p>
+                    <p className="text-xs text-slate-400">Connected</p>
+                  </div>
+                </div>
+                <div className="glass rounded-xl p-6 flex items-center gap-4">
+                  <Cpu size={24} className="text-purple-500" />
+                  <div>
+                    <p className="font-medium text-slate-100">Kubernetes</p>
+                    <p className="text-xs text-slate-400">Connected</p>
+                  </div>
+                </div>
+                <div className="glass rounded-xl p-6 flex items-center gap-4">
+                  <Shield size={24} className="text-green-500" />
+                  <div>
+                    <p className="font-medium text-slate-100">PagerDuty</p>
+                    <p className="text-xs text-slate-400">Connected</p>
+                  </div>
+                </div>
+                <div className="glass rounded-xl p-6 flex items-center gap-4">
+                  <MessageSquare size={24} className="text-yellow-500" />
+                  <div>
+                    <p className="font-medium text-slate-100">Slack</p>
+                    <p className="text-xs text-slate-400">Synced</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+          {currentView === 'console' && (
+            <div className="p-8 space-y-6">
+              <h2 className="text-2xl font-bold text-slate-200">Console</h2>
+              <pre className="bg-slate-900/60 p-4 rounded-lg text-xs overflow-x-auto text-slate-300 border border-slate-800">
+                {`> Loading agent logs...\n[12:00:01] Agent initialized\n[12:00:05] Fetching incident data...\n[12:00:07] Incident data loaded\n[12:00:12] Running safety checks...\n[12:00:14] Checks passed. Ready for action.`}
+              </pre>
+            </div>
+          )}
+        </AnimatePresence>
         </AnimatePresence>
       </main>
     </div>
   );
 }
 
-function SidebarItem({ icon, label, active = false, count = 0 }: any) {
+function SidebarItem({ icon, label, active = false, count = 0, onClick }: any) {
   return (
-    <div className={`flex items-center justify-between p-3 rounded-xl cursor-pointer transition-all ${active ? 'bg-blue-600/10 text-blue-400' : 'text-slate-500 hover:bg-slate-800/50'}`}>
+    <div onClick={onClick} className={`flex items-center justify-between p-3 rounded-xl cursor-pointer transition-all ${active ? 'bg-blue-600/10 text-blue-400' : 'text-slate-500 hover:bg-slate-800/50'}`}>
       <div className="flex items-center gap-3">
         {icon}
         <span className="hidden lg:block text-sm font-medium">{label}</span>
