@@ -127,14 +127,14 @@ export default function IncidentCommander() {
   }, []);
 
   return (
-    <div className="flex h-screen bg-[#0a0a0c] text-slate-200 overflow-hidden">
+    <div className="flex h-screen bg-slate-50 text-slate-900 overflow-hidden">
       {/* Sidebar */}
-      <div className="w-20 lg:w-64 border-r border-slate-800/50 flex flex-col bg-[#0d0d0f]">
+      <div className="w-20 lg:w-64 border-r border-slate-200 flex flex-col bg-white">
         <div className="p-6 flex items-center gap-3">
-          <div className="p-2 bg-blue-600 rounded-lg glow-blue">
+          <div className="p-2 bg-blue-600 rounded-lg shadow-lg shadow-blue-200/50">
             <Shield size={24} className="text-white" />
           </div>
-          <span className="hidden lg:block font-bold tracking-tight text-xl">COMMANDER</span>
+          <span className="hidden lg:block font-bold tracking-tight text-xl text-slate-900">COMMANDER</span>
         </div>
 
         <nav className="flex-1 px-4 py-6 space-y-2">
@@ -144,11 +144,11 @@ export default function IncidentCommander() {
           <SidebarItem icon={<Terminal size={20} />} label="Console" active={currentView === 'console'} onClick={() => setCurrentView('console')} />
         </nav>
 
-        <div className="p-4 border-t border-slate-800/50">
-          <div className="flex items-center gap-3 p-3 rounded-xl bg-slate-900/50">
-            <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-blue-500 to-purple-500" />
+        <div className="p-4 border-t border-slate-100">
+          <div className="flex items-center gap-3 p-3 rounded-xl bg-slate-50">
+            <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-blue-500 to-indigo-500 shadow-sm" />
             <div className="hidden lg:block">
-              <p className="text-sm font-medium">SRE Lead</p>
+              <p className="text-sm font-semibold text-slate-900">SRE Lead</p>
               <p className="text-xs text-slate-500">Connected</p>
             </div>
           </div>
@@ -157,25 +157,25 @@ export default function IncidentCommander() {
 
       {/* Main Content Area */}
       <main className="flex-1 flex flex-col overflow-hidden relative">
-        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-blue-600/5 blur-[120px] -z-10 pointer-events-none" />
-        <div className="absolute bottom-0 left-0 w-[300px] h-[300px] bg-purple-600/5 blur-[100px] -z-10 pointer-events-none" />
+        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-blue-50/50 blur-[120px] -z-10 pointer-events-none" />
+        <div className="absolute bottom-0 left-0 w-[300px] h-[300px] bg-indigo-50/50 blur-[100px] -z-10 pointer-events-none" />
 
         {/* Header */}
-        <header className="h-20 border-b border-slate-800/50 flex items-center justify-between px-8 bg-[#0a0a0c]/80 backdrop-blur-md sticky top-0 z-10">
+        <header className="h-20 border-b border-slate-200 flex items-center justify-between px-8 bg-white/80 backdrop-blur-md sticky top-0 z-10">
           <div className="flex items-center gap-4">
-            <div className="px-3 py-1 bg-red-500/10 border border-red-500/20 rounded-full flex items-center gap-2">
+            <div className="px-3 py-1 bg-red-50 border border-red-100 rounded-full flex items-center gap-2">
               <div className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
-              <span className="text-xs font-bold text-red-500 uppercase tracking-widest">Critical Incident</span>
+              <span className="text-xs font-bold text-red-600 uppercase tracking-widest">Critical Incident</span>
             </div>
-            <h1 className="text-lg font-semibold text-slate-100">INC-2024-0503: API Latency Spike</h1>
+            <h1 className="text-lg font-bold text-slate-900">INC-2024-0503: API Latency Spike</h1>
           </div>
 
           <div className="flex items-center gap-4">
-            <button onClick={handleSlackSync} className="px-4 py-2 bg-slate-800/50 hover:bg-slate-800 border border-slate-700/50 rounded-lg text-sm transition-colors flex items-center gap-2">
-              <MessageSquare size={16} />
+            <button onClick={handleSlackSync} className="px-4 py-2 bg-white hover:bg-slate-50 border border-slate-200 rounded-xl text-sm font-medium transition-colors flex items-center gap-2 shadow-sm">
+              <MessageSquare size={16} className="text-slate-500" />
               Slack Sync
             </button>
-            <button onClick={handleResolve} className="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-lg text-sm font-medium transition-all glow-blue">
+            <button onClick={handleResolve} className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-sm font-bold transition-all shadow-lg shadow-blue-200">
               Resolve Incident
             </button>
           </div>
@@ -185,13 +185,13 @@ export default function IncidentCommander() {
         <div className="flex-1 flex flex-col overflow-hidden">
           {currentView === 'dashboard' ? (
             <>
-              <div className="px-8 border-b border-slate-800/50 flex gap-8 bg-[#0a0a0c]/50 backdrop-blur-sm">
+              <div className="px-8 border-b border-slate-200 flex gap-8 bg-white/50 backdrop-blur-sm">
                 {['overview', 'analysis', 'logs'].map(tab => (
                   <button 
                     key={tab}
                     onClick={() => setActiveTab(tab)}
-                    className={`py-4 text-sm font-medium transition-colors border-b-2 capitalize ${
-                      activeTab === tab ? 'border-blue-500 text-blue-500' : 'border-transparent text-slate-500 hover:text-slate-300'
+                    className={`py-4 text-sm font-bold transition-colors border-b-2 capitalize ${
+                      activeTab === tab ? 'border-blue-600 text-blue-600' : 'border-transparent text-slate-400 hover:text-slate-600'
                     }`}
                   >
                     {tab}
@@ -203,78 +203,81 @@ export default function IncidentCommander() {
                 {activeTab === 'overview' && (
                   <div className="space-y-8">
                     <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                      <div className="lg:col-span-2 glass rounded-2xl p-6">
-                        <h3 className="text-sm font-medium text-slate-400 mb-6 flex items-center gap-2">
-                          <Activity size={16} /> System Latency (P99)
+                      <div className="lg:col-span-2 bg-white border border-slate-200 rounded-3xl p-8 shadow-sm">
+                        <h3 className="text-sm font-bold text-slate-400 mb-6 flex items-center gap-2 uppercase tracking-wider">
+                          <Activity size={16} className="text-blue-500" /> System Latency (P99)
                         </h3>
                         <div className="h-64">
                           <ResponsiveContainer width="100%" height="100%">
                             <AreaChart data={mockMetrics}>
                               <defs>
                                 <linearGradient id="colorValue" x1="0" y1="0" x2="0" y2="1">
-                                  <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.3}/>
+                                  <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.2}/>
                                   <stop offset="95%" stopColor="#3b82f6" stopOpacity={0}/>
                                 </linearGradient>
                               </defs>
-                              <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" vertical={false} />
-                              <XAxis dataKey="time" stroke="#475569" fontSize={12} tickLine={false} axisLine={false} />
-                              <YAxis stroke="#475569" fontSize={12} tickLine={false} axisLine={false} />
+                              <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" vertical={false} />
+                              <XAxis dataKey="time" stroke="#94a3b8" fontSize={12} tickLine={false} axisLine={false} />
+                              <YAxis stroke="#94a3b8" fontSize={12} tickLine={false} axisLine={false} />
                               <Tooltip 
-                                contentStyle={{ backgroundColor: '#0d0d0f', border: '1px solid #1e293b', borderRadius: '8px' }}
-                                itemStyle={{ color: '#3b82f6' }}
+                                contentStyle={{ backgroundColor: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '12px', boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)' }}
+                                itemStyle={{ color: '#2563eb' }}
                               />
-                              <Area type="monotone" dataKey="value" stroke="#3b82f6" strokeWidth={2} fillOpacity={1} fill="url(#colorValue)" />
+                              <Area type="monotone" dataKey="value" stroke="#2563eb" strokeWidth={3} fillOpacity={1} fill="url(#colorValue)" />
                             </AreaChart>
                           </ResponsiveContainer>
                         </div>
                       </div>
 
-                      <div className="glass rounded-2xl p-6 flex flex-col">
-                        <h3 className="text-sm font-medium text-slate-400 mb-6 flex items-center gap-2">
-                          <Cpu size={16} /> Agent Status
+                      <div className="bg-white border border-slate-200 rounded-3xl p-8 shadow-sm flex flex-col">
+                        <h3 className="text-sm font-bold text-slate-400 mb-6 flex items-center gap-2 uppercase tracking-wider">
+                          <Cpu size={16} className="text-indigo-500" /> Agent Status
                         </h3>
                         <div className="flex-1 flex flex-col justify-center items-center space-y-4">
                           <div className="relative">
-                            <div className="w-24 h-24 rounded-full border-4 border-blue-600/20 flex items-center justify-center">
+                            <div className="w-24 h-24 rounded-full border-4 border-slate-50 flex items-center justify-center">
                               <div className="w-16 h-16 rounded-full border-4 border-blue-600 border-t-transparent animate-spin" />
                             </div>
                             <div className="absolute inset-0 flex items-center justify-center">
                               <Database size={24} className="text-blue-500" />
                             </div>
                           </div>
-                          <p className="text-sm font-medium text-slate-200 capitalize">{status}...</p>
+                          <p className="text-sm font-bold text-slate-900 capitalize">{status}...</p>
+                          <div className="px-3 py-1 bg-blue-50 rounded-full">
+                            <span className="text-[10px] font-bold text-blue-600 uppercase">Real-time Analysis</span>
+                          </div>
                         </div>
                       </div>
                     </div>
 
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                      <div className="glass rounded-2xl p-6 overflow-hidden flex flex-col">
-                        <h3 className="text-sm font-medium text-slate-400 mb-6 flex items-center gap-2">
-                          <History size={16} /> Live Incident Timeline
+                      <div className="bg-white border border-slate-200 rounded-3xl p-8 shadow-sm overflow-hidden flex flex-col">
+                        <h3 className="text-sm font-bold text-slate-400 mb-6 flex items-center gap-2 uppercase tracking-wider">
+                          <History size={16} className="text-slate-400" /> Live Incident Timeline
                         </h3>
                         <div className="space-y-6 flex-1 overflow-y-auto pr-2">
                           {timeline.map((item) => (
                             <div key={item.id} className="flex gap-4 relative group">
                               <div className="flex flex-col items-center">
-                                <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
-                                  item.status === 'critical' ? 'bg-red-500/20 text-red-500' :
-                                  item.status === 'action' ? 'bg-blue-500/20 text-blue-500' :
-                                  'bg-slate-800 text-slate-400'
+                                <div className={`w-8 h-8 rounded-full flex items-center justify-center shadow-sm ${
+                                  item.status === 'critical' ? 'bg-red-50 text-red-600 border border-red-100' :
+                                  item.status === 'action' ? 'bg-blue-50 text-blue-600 border border-blue-100' :
+                                  'bg-slate-50 text-slate-400 border border-slate-100'
                                 } z-10`}>
                                   {item.status === 'critical' ? <AlertTriangle size={14} /> : 
                                    item.status === 'action' ? <CheckCircle size={14} /> : 
                                    <ChevronRight size={14} />}
                                 </div>
-                                <div className="w-0.5 h-full bg-slate-800 mt-2" />
+                                <div className="w-px h-full bg-slate-100 mt-2" />
                               </div>
                               <div className="pb-6">
                                 <div className="flex items-center gap-2 mb-1">
-                                  <span className="text-[10px] font-bold text-slate-500 uppercase">{item.time}</span>
+                                  <span className="text-[10px] font-bold text-slate-400 uppercase tracking-tight">{item.time}</span>
                                   <span className={`text-[10px] font-bold uppercase ${
-                                    item.type === 'agent' ? 'text-blue-400' : 'text-slate-400'
+                                    item.type === 'agent' ? 'text-blue-600' : 'text-slate-400'
                                   }`}>{item.type}</span>
                                 </div>
-                                <p className="text-sm text-slate-300 leading-relaxed">{item.message}</p>
+                                <p className="text-sm text-slate-700 leading-relaxed font-medium">{item.message}</p>
                               </div>
                             </div>
                           ))}
@@ -282,21 +285,21 @@ export default function IncidentCommander() {
                       </div>
 
                       <div className="space-y-6">
-                        <h3 className="text-sm font-medium text-slate-400 flex items-center gap-2">
-                          <Play size={16} /> Recommended Actions
+                        <h3 className="text-sm font-bold text-slate-400 flex items-center gap-2 uppercase tracking-wider">
+                          <Play size={16} className="text-blue-600" /> Recommended Actions
                         </h3>
-                        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="p-6 rounded-2xl bg-gradient-to-br from-blue-600/20 to-purple-600/10 border border-blue-500/30 glow-blue">
-                          <h4 className="text-lg font-semibold text-slate-100 mb-2">Rollback to v1.2.3</h4>
-                          <p className="text-sm text-slate-400 mb-6">Memory leak detected. Reverting recommended.</p>
-                          <button onClick={() => startApproval({ label: 'Rollback to v1.2.3' })} className="w-full py-3 bg-blue-600 hover:bg-blue-500 text-white rounded-xl font-medium transition-all">
+                        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="p-8 rounded-3xl bg-blue-600 text-white shadow-xl shadow-blue-200">
+                          <h4 className="text-xl font-bold mb-2">Rollback to v1.2.3</h4>
+                          <p className="text-sm text-blue-100 mb-6 font-medium">Memory leak detected in current version. Immediate rollback recommended for stability.</p>
+                          <button onClick={() => startApproval({ label: 'Rollback to v1.2.3' })} className="w-full py-4 bg-white text-blue-600 rounded-2xl font-bold transition-all hover:bg-slate-50 shadow-sm">
                             Approve & Execute
                           </button>
                         </motion.div>
 
-                        <div className="p-6 rounded-2xl glass border-slate-800/50">
-                          <h4 className="text-base font-semibold text-slate-100 mb-1">Scale Redis Cluster</h4>
-                          <p className="text-xs text-slate-500 mb-4">Memory usage at 94%. Scaling vertically.</p>
-                          <button onClick={() => setActiveTab('analysis')} className="w-full py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg text-sm border border-slate-700/50">
+                        <div className="p-8 rounded-3xl bg-white border border-slate-200 shadow-sm">
+                          <h4 className="text-lg font-bold text-slate-900 mb-1">Scale Redis Cluster</h4>
+                          <p className="text-xs text-slate-500 mb-6 font-medium">Memory usage at 94%. Scaling vertically to handle traffic surge.</p>
+                          <button onClick={() => setActiveTab('analysis')} className="w-full py-3 bg-slate-50 hover:bg-slate-100 text-slate-600 rounded-xl text-sm font-bold border border-slate-200 transition-colors">
                             View Analysis
                           </button>
                         </div>
@@ -307,74 +310,80 @@ export default function IncidentCommander() {
 
                 {activeTab === 'analysis' && (
                   <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                    <div className="glass rounded-2xl p-8 space-y-6">
-                      <h3 className="text-xl font-bold flex items-center gap-3">
-                        <Database className="text-blue-500" /> Root Cause Analysis
+                    <div className="bg-white border border-slate-200 rounded-3xl p-8 space-y-6 shadow-sm">
+                      <h3 className="text-xl font-bold flex items-center gap-3 text-slate-900">
+                        <Database className="text-blue-600" /> Root Cause Analysis
                       </h3>
-                      <div className="p-4 bg-blue-500/5 border border-blue-500/20 rounded-xl">
-                        <p className="text-slate-200 leading-relaxed">Detected anomalous spike in database connection wait times.</p>
+                      <div className="p-5 bg-slate-50 rounded-2xl border border-slate-100">
+                        <p className="text-slate-700 leading-relaxed font-medium">Detected anomalous spike in database connection wait times correlated with elevated API errors.</p>
                       </div>
                       <div className="space-y-4">
-                        <ReasoningStep step="1" text="Identified 503 errors in api-gateway logs." />
-                        <ReasoningStep step="2" text="Correlated error timing with deployment." />
+                        <ReasoningStep step="1" text="Identified 503 errors in api-gateway logs via automated log analysis." />
+                        <ReasoningStep step="2" text="Correlated error timing with deployment v1.2.4 using deployment event data." />
                       </div>
                     </div>
-                    <div className="glass rounded-2xl p-8 overflow-hidden">
-                      <h3 className="text-xl font-bold flex items-center gap-3 mb-6">
-                        <Terminal className="text-slate-500" /> Raw Telemetry
+                    <div className="bg-white border border-slate-200 rounded-3xl p-8 overflow-hidden shadow-sm">
+                      <h3 className="text-xl font-bold flex items-center gap-3 mb-6 text-slate-900">
+                        <Terminal className="text-slate-400" /> Raw Telemetry
                       </h3>
-                      <div className="bg-slate-950 rounded-xl p-4 font-mono text-xs overflow-x-auto text-slate-400 border border-slate-900">
-                        <p className="text-blue-500">// Datadog Query</p>
-                        <p>[16:20:00] 12.4% idle (Critical)</p>
+                      <div className="bg-slate-50 rounded-2xl p-6 font-mono text-[11px] overflow-x-auto text-slate-600 border border-slate-200">
+                        <p className="text-blue-600 mb-1">// Datadog Query: service.latency{host:*}</p>
+                        <p className="mb-1 text-slate-900 font-bold">[16:20:00] 12.4% idle (Critical Threshold: 15%)</p>
+                        <p className="text-red-500 font-bold">[16:20:05] ALERT: Connection Pool Exhaustion</p>
                       </div>
                     </div>
                   </div>
                 )}
 
                 {activeTab === 'logs' && (
-                  <div className="glass rounded-2xl p-8 text-center text-slate-500 animate-pulse">
-                    Select an incident to view deep-dive logs.
+                  <div className="bg-white border border-slate-200 rounded-3xl p-12 text-center text-slate-400 shadow-sm">
+                    <div className="w-16 h-16 bg-slate-50 rounded-full flex items-center justify-center mx-auto mb-4">
+                      <Layers size={24} className="text-slate-200" />
+                    </div>
+                    <p className="font-bold text-slate-900 mb-1">No Deep-Dive Logs Selected</p>
+                    <p className="text-sm font-medium">Select an incident from the timeline to view correlated logs.</p>
                   </div>
                 )}
               </div>
             </>
           ) : currentView === 'history' ? (
             <div className="p-8 space-y-6 overflow-y-auto flex-1">
-              <h2 className="text-2xl font-bold text-slate-200">Incident History</h2>
-              <div className="space-y-4">
-                <div className="bg-slate-800/50 p-6 rounded-2xl border border-slate-700/30">
-                  <div className="flex justify-between items-center mb-2">
-                    <span className="font-bold text-slate-100">INC-2024-0501: DB Latency</span>
-                    <span className="px-2 py-1 bg-green-500/10 text-green-500 text-[10px] font-bold rounded uppercase">Resolved</span>
+              <h2 className="text-2xl font-bold text-slate-900">Incident History</h2>
+              <div className="grid grid-cols-1 gap-4">
+                {[
+                  { id: 'INC-2024-0501', title: 'DB Latency Spike', msg: 'Resolved by scaling connection pool. Downtime: 4m.', status: 'Resolved' },
+                  { id: 'INC-2024-0489', title: 'Auth Service Failure', msg: 'Mitigated via emergency rollback to stable v1.2.2.', status: 'Resolved' }
+                ].map(item => (
+                  <div key={item.id} className="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm hover:border-blue-200 transition-colors cursor-pointer group">
+                    <div className="flex justify-between items-center mb-2">
+                      <span className="font-bold text-slate-900 group-hover:text-blue-600 transition-colors">{item.id}: {item.title}</span>
+                      <span className="px-3 py-1 bg-green-50 text-green-600 text-[10px] font-bold rounded-full uppercase border border-green-100">{item.status}</span>
+                    </div>
+                    <p className="text-sm text-slate-500 font-medium">{item.msg}</p>
                   </div>
-                  <p className="text-sm text-slate-400">Database latency spike resolved by scaling connection pool. Downtime: 4m.</p>
-                </div>
-                <div className="bg-slate-800/50 p-6 rounded-2xl border border-slate-700/30">
-                  <div className="flex justify-between items-center mb-2">
-                    <span className="font-bold text-slate-100">INC-2024-0489: Auth Failure</span>
-                    <span className="px-2 py-1 bg-green-500/10 text-green-500 text-[10px] font-bold rounded uppercase">Resolved</span>
-                  </div>
-                  <p className="text-sm text-slate-400">High error rate in auth service mitigated via rollback to v1.2.2.</p>
-                </div>
+                ))}
               </div>
             </div>
           ) : currentView === 'integrations' ? (
             <div className="p-8 space-y-6 overflow-y-auto flex-1">
-              <h2 className="text-2xl font-bold text-slate-200">System Integrations</h2>
+              <h2 className="text-2xl font-bold text-slate-900">System Integrations</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
                 {[
-                  { name: 'Datadog', icon: <Database />, color: 'text-blue-500' },
-                  { name: 'Kubernetes', icon: <Cpu />, color: 'text-purple-500' },
-                  { name: 'PagerDuty', icon: <Shield />, color: 'text-green-500' },
-                  { name: 'Slack', icon: <MessageSquare />, color: 'text-yellow-500' }
+                  { name: 'Datadog', icon: <Database />, color: 'bg-blue-50 text-blue-600 border-blue-100' },
+                  { name: 'Kubernetes', icon: <Cpu />, color: 'bg-purple-50 text-purple-600 border-purple-100' },
+                  { name: 'PagerDuty', icon: <Shield />, color: 'bg-green-50 text-green-600 border-green-100' },
+                  { name: 'Slack', icon: <MessageSquare />, color: 'bg-yellow-50 text-yellow-600 border-yellow-100' }
                 ].map(tool => (
-                  <div key={tool.name} className="glass rounded-2xl p-6 flex items-center gap-4 hover:border-slate-600/50 transition-colors cursor-pointer">
-                    <div className={`p-3 bg-slate-900 rounded-xl ${tool.color}`}>
-                      {React.cloneElement(tool.icon as React.ReactElement, { size: 24 })}
+                  <div key={tool.name} className="bg-white border border-slate-200 rounded-3xl p-8 flex items-center gap-6 hover:shadow-lg hover:shadow-slate-100 transition-all cursor-pointer group">
+                    <div className={`p-4 rounded-2xl border transition-all group-hover:scale-110 ${tool.color}`}>
+                      {React.cloneElement(tool.icon as React.ReactElement, { size: 32 })}
                     </div>
                     <div>
-                      <p className="font-bold text-slate-100">{tool.name}</p>
-                      <p className="text-xs text-slate-500">Connected & Synced</p>
+                      <p className="font-bold text-slate-900 text-lg">{tool.name}</p>
+                      <div className="flex items-center gap-1.5">
+                        <div className="w-1.5 h-1.5 rounded-full bg-green-500" />
+                        <p className="text-xs text-slate-500 font-bold uppercase tracking-wider">Operational</p>
+                      </div>
                     </div>
                   </div>
                 ))}
@@ -382,16 +391,25 @@ export default function IncidentCommander() {
             </div>
           ) : (
             <div className="p-8 space-y-6 overflow-y-auto flex-1">
-              <h2 className="text-2xl font-bold text-slate-200 flex items-center gap-3">
-                <Terminal size={24} className="text-slate-500" /> System Console
-              </h2>
-              <div className="bg-slate-950 rounded-2xl p-6 font-mono text-xs border border-slate-800 shadow-2xl h-[500px] overflow-y-auto">
-                <p className="text-blue-500 mb-2">// AI Agent Reasoning Logs</p>
-                <p className="text-slate-400 mb-1">[16:20:01] INFO: Commander initialized</p>
-                <p className="text-slate-400 mb-1">[16:20:05] DEBUG: Fetching Datadog metrics for service: api-gateway</p>
-                <p className="text-yellow-500 mb-1">[16:21:12] WARN: High wait time detected on RDS instance rds-prod-01</p>
-                <p className="text-blue-500 mb-1">[16:22:45] AGENT: Suggesting vertical scale-up of Redis cluster</p>
-                <p className="text-slate-500 animate-pulse mt-4">_</p>
+              <div className="flex items-center justify-between">
+                <h2 className="text-2xl font-bold text-slate-900 flex items-center gap-3">
+                  <Terminal size={24} className="text-slate-400" /> System Console
+                </h2>
+                <div className="px-3 py-1 bg-slate-100 rounded-full">
+                  <span className="text-[10px] font-bold text-slate-500 uppercase">Live Output</span>
+                </div>
+              </div>
+              <div className="bg-slate-900 rounded-3xl p-8 font-mono text-[11px] border border-slate-800 shadow-2xl h-[500px] overflow-y-auto relative">
+                <div className="sticky top-0 right-0 bg-slate-900 pb-4 flex justify-between items-center border-b border-slate-800 mb-4">
+                  <p className="text-blue-400 font-bold tracking-widest">// AI AGENT CORE REASONING</p>
+                  <p className="text-slate-600">v4.2.0-stable</p>
+                </div>
+                <p className="text-slate-400 mb-1 leading-relaxed"><span className="text-slate-600 mr-2">[16:20:01]</span> <span className="text-blue-400">INFO:</span> Commander engine initialized in high-availability mode.</p>
+                <p className="text-slate-400 mb-1 leading-relaxed"><span className="text-slate-600 mr-2">[16:20:05]</span> <span className="text-blue-400">DEBUG:</span> Querying Datadog API for metric: <span className="text-indigo-400">service.api_gateway.p99_latency</span></p>
+                <p className="text-yellow-400 mb-1 leading-relaxed font-bold"><span className="text-slate-600 mr-2">[16:21:12]</span> WARN: Latency spike (850ms) detected on shard 04. Analyzing correlation...</p>
+                <p className="text-slate-400 mb-1 leading-relaxed"><span className="text-slate-600 mr-2">[16:21:45]</span> <span className="text-blue-400">INFO:</span> Found correlation with Kubernetes deployment event <span className="text-indigo-400">dep-v1.2.4</span>.</p>
+                <p className="text-green-400 mb-1 leading-relaxed font-bold"><span className="text-slate-600 mr-2">[16:22:10]</span> SUCCESS: Safety verification passed for rollback command.</p>
+                <p className="text-blue-400 font-bold mt-4 animate-pulse">_</p>
               </div>
             </div>
           )}
@@ -400,26 +418,35 @@ export default function IncidentCommander() {
         {/* Approval Modal */}
         <AnimatePresence>
           {approvalStep !== 'idle' && (
-            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-50 flex items-center justify-center p-6 bg-black/60 backdrop-blur-sm">
-              <motion.div initial={{ scale: 0.95, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.95, opacity: 0 }} className="w-full max-w-lg glass rounded-3xl p-8 shadow-2xl">
-                <h2 className="text-xl font-bold mb-6 flex items-center gap-2">
-                  <Shield className="text-blue-500" /> Approval: {selectedAction?.label}
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-50 flex items-center justify-center p-6 bg-slate-900/40 backdrop-blur-md">
+              <motion.div initial={{ scale: 0.95, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.95, opacity: 0 }} className="w-full max-w-lg bg-white rounded-[32px] p-10 shadow-2xl border border-slate-100">
+                <div className="w-16 h-16 bg-blue-50 rounded-2xl flex items-center justify-center mb-6">
+                  <Shield size={32} className="text-blue-600" />
+                </div>
+                <h2 className="text-2xl font-bold text-slate-900 mb-2">
+                  Action Approval
                 </h2>
+                <p className="text-slate-500 mb-8 font-medium">Verify safety steps for: <span className="text-blue-600 font-bold">{selectedAction?.label}</span></p>
+                
                 <div className="space-y-6">
                   <StepItem label="Safety Verification" status={approvalStep === 'reviewing' ? 'current' : 'complete'} />
                   <StepItem label="Pre-flight Checks" status={approvalStep === 'checking' ? 'current' : (approvalStep === 'executing' || approvalStep === 'success' ? 'complete' : 'pending')} />
                   <StepItem label="Executing Command" status={approvalStep === 'executing' ? 'current' : (approvalStep === 'success' ? 'complete' : 'pending')} />
                 </div>
-                <div className="mt-8 flex gap-4">
+
+                <div className="mt-10 flex gap-4">
                   {approvalStep === 'reviewing' ? (
                     <>
-                      <button onClick={runSafetyChecks} className="flex-1 py-3 bg-blue-600 hover:bg-blue-500 text-white rounded-xl font-bold">Confirm</button>
-                      <button onClick={() => setApprovalStep('idle')} className="flex-1 py-3 bg-slate-800 text-slate-400 rounded-xl">Cancel</button>
+                      <button onClick={runSafetyChecks} className="flex-1 py-4 bg-blue-600 hover:bg-blue-700 text-white rounded-2xl font-bold transition-all shadow-lg shadow-blue-200">Confirm Execute</button>
+                      <button onClick={() => setApprovalStep('idle')} className="flex-1 py-4 bg-slate-50 hover:bg-slate-100 text-slate-600 rounded-2xl font-bold transition-all">Cancel</button>
                     </>
                   ) : approvalStep === 'success' ? (
-                    <button onClick={() => setApprovalStep('idle')} className="w-full py-3 bg-green-600 text-white rounded-xl font-bold">Close</button>
+                    <button onClick={() => setApprovalStep('idle')} className="w-full py-4 bg-green-600 hover:bg-green-700 text-white rounded-2xl font-bold transition-all shadow-lg shadow-green-200">Close & Return</button>
                   ) : (
-                    <div className="w-full py-3 bg-slate-800 text-slate-500 rounded-xl text-center animate-pulse">Processing...</div>
+                    <div className="w-full py-4 bg-slate-50 text-slate-400 rounded-2xl font-bold text-center animate-pulse border border-slate-100 flex items-center justify-center gap-3">
+                      <div className="w-4 h-4 border-2 border-blue-600 border-t-transparent rounded-full animate-spin" />
+                      Processing Action...
+                    </div>
                   )}
                 </div>
               </motion.div>
@@ -433,12 +460,12 @@ export default function IncidentCommander() {
 
 function SidebarItem({ icon, label, active = false, count = 0, onClick }: any) {
   return (
-    <div onClick={onClick} className={`flex items-center justify-between p-3 rounded-xl cursor-pointer transition-all ${active ? 'bg-blue-600/10 text-blue-400' : 'text-slate-500 hover:bg-slate-800/50'}`}>
+    <div onClick={onClick} className={`flex items-center justify-between p-3 rounded-xl cursor-pointer transition-all ${active ? 'bg-blue-50 text-blue-600' : 'text-slate-500 hover:bg-slate-50'}`}>
       <div className="flex items-center gap-3">
         {icon}
-        <span className="hidden lg:block text-sm font-medium">{label}</span>
+        <span className="hidden lg:block text-sm font-bold tracking-tight">{label}</span>
       </div>
-      {count > 0 && <span className="hidden lg:flex w-5 h-5 bg-blue-600 text-white text-[10px] font-bold rounded-full items-center justify-center">{count}</span>}
+      {count > 0 && <span className="hidden lg:flex w-5 h-5 bg-blue-600 text-white text-[10px] font-bold rounded-full items-center justify-center shadow-lg shadow-blue-200">{count}</span>}
     </div>
   );
 }
@@ -446,11 +473,11 @@ function SidebarItem({ icon, label, active = false, count = 0, onClick }: any) {
 function StepItem({ label, status }: any) {
   return (
     <div className="flex items-center gap-4">
-      <div className={`w-6 h-6 rounded-full flex items-center justify-center border-2 ${status === 'complete' ? 'bg-blue-600 border-blue-600' : status === 'current' ? 'border-blue-500 animate-pulse' : 'border-slate-800'}`}>
+      <div className={`w-6 h-6 rounded-full flex items-center justify-center border-2 ${status === 'complete' ? 'bg-blue-600 border-blue-600' : status === 'current' ? 'border-blue-500 animate-pulse' : 'border-slate-200'}`}>
         {status === 'complete' && <CheckCircle size={14} className="text-white" />}
         {status === 'current' && <div className="w-2 h-2 bg-blue-500 rounded-full"></div>}
       </div>
-      <span className={`text-sm ${status === 'pending' ? 'text-slate-600' : 'text-slate-200'}`}>{label}</span>
+      <span className={`text-sm font-medium ${status === 'pending' ? 'text-slate-300' : 'text-slate-700'}`}>{label}</span>
     </div>
   );
 }
@@ -458,8 +485,8 @@ function StepItem({ label, status }: any) {
 function ReasoningStep({ step, text }: any) {
   return (
     <div className="flex gap-3 items-start">
-      <span className="flex-shrink-0 w-5 h-5 rounded-full bg-slate-800 text-[10px] font-bold flex items-center justify-center text-slate-400 border border-slate-700">{step}</span>
-      <p className="text-sm text-slate-300">{text}</p>
+      <span className="flex-shrink-0 w-6 h-6 rounded-lg bg-slate-50 text-[10px] font-bold flex items-center justify-center text-slate-500 border border-slate-200">{step}</span>
+      <p className="text-sm text-slate-600 font-medium">{text}</p>
     </div>
   );
 }
