@@ -14,7 +14,8 @@ import {
   Play, 
   RefreshCcw, 
   Shield, 
-  Terminal 
+  Terminal,
+  Plus
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
@@ -387,6 +388,17 @@ export default function IncidentCommander() {
                     </div>
                   </div>
                 ))}
+                
+                {/* Add New Connector Card */}
+                <div className="bg-slate-50 border-2 border-dashed border-slate-200 rounded-3xl p-8 flex flex-col items-center justify-center gap-4 hover:border-blue-300 hover:bg-blue-50/50 transition-all cursor-pointer group text-center min-h-[160px]">
+                  <div className="p-3 rounded-full bg-white shadow-sm border border-slate-200 text-slate-400 group-hover:text-blue-600 group-hover:scale-110 transition-all">
+                    <Plus size={24} />
+                  </div>
+                  <div>
+                    <p className="font-bold text-slate-700 group-hover:text-blue-700">Add New Connector</p>
+                    <p className="text-xs text-slate-500 mt-1">Configure Webhooks, APIs, etc.</p>
+                  </div>
+                </div>
               </div>
             </div>
           ) : (
