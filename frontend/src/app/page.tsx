@@ -327,7 +327,7 @@ export default function IncidentCommander() {
                         <Terminal className="text-slate-400" /> Raw Telemetry
                       </h3>
                       <div className="bg-slate-50 rounded-2xl p-6 font-mono text-[11px] overflow-x-auto text-slate-600 border border-slate-200">
-                        <p className="text-blue-600 mb-1">// Datadog Query: service.latency{host:*}</p>
+                        <p className="text-blue-600 mb-1">{"// Datadog Query: service.latency{host:*}"}</p>
                         <p className="mb-1 text-slate-900 font-bold">[16:20:00] 12.4% idle (Critical Threshold: 15%)</p>
                         <p className="text-red-500 font-bold">[16:20:05] ALERT: Connection Pool Exhaustion</p>
                       </div>
