@@ -54,6 +54,7 @@ export default function IncidentCommander() {
   const [selectedAction, setSelectedAction] = useState<{ label: string } | null>(null);
   const [approvalStep, setApprovalStep] = useState('idle');
   const [currentView, setCurrentView] = useState<'dashboard' | 'history' | 'integrations' | 'console'>('dashboard');
+  const [isAddConnectorModalOpen, setIsAddConnectorModalOpen] = useState(false);
 
   const startApproval = (action: any) => {
     setSelectedAction(action);
@@ -390,7 +391,7 @@ export default function IncidentCommander() {
                 ))}
                 
                 {/* Add New Connector Card */}
-                <div className="bg-slate-50 border-2 border-dashed border-slate-200 rounded-3xl p-8 flex flex-col items-center justify-center gap-4 hover:border-blue-300 hover:bg-blue-50/50 transition-all cursor-pointer group text-center min-h-[160px]">
+                <div onClick={() => setIsAddConnectorModalOpen(true)} className="bg-slate-50 border-2 border-dashed border-slate-200 rounded-3xl p-8 flex flex-col items-center justify-center gap-4 hover:border-blue-300 hover:bg-blue-50/50 transition-all cursor-pointer group text-center min-h-[160px]">
                   <div className="p-3 rounded-full bg-white shadow-sm border border-slate-200 text-slate-400 group-hover:text-blue-600 group-hover:scale-110 transition-all">
                     <Plus size={24} />
                   </div>
@@ -429,6 +430,36 @@ export default function IncidentCommander() {
 
         {/* Approval Modal */}
         <AnimatePresence>
+          {isAddConnectorModalOpen && (
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-50 flex items-center justify-center p-6 bg-slate-900/40 backdrop-blur-md">
+              <motion.div initial={{ scale: 0.95, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.95, opacity: 0 }} className="w-full max-w-lg bg-white rounded-[32px] p-10 shadow-2xl border border-slate-100 relative">
+                <div className="w-16 h-16 bg-blue-50 rounded-2xl flex items-center justify-center mb-6">
+                  <Plus size={32} className="text-blue-600" />
+                </div>
+                <h2 className="text-2xl font-bold text-slate-900 mb-2">
+                  Add New Connector
+                </h2>
+                <p className="text-slate-500 mb-8 font-medium">Configure a new webhook or API integration for incident triggers.</p>
+                
+                <div className="space-y-4">
+                  <div>
+                    <label className="block text-sm font-bold text-slate-700 mb-1">Connector Name</label>
+                    <input type="text" placeholder="e.g. Sentry, Jira" className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:border-blue-500 focus:bg-white transition-all text-sm font-medium" />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-bold text-slate-700 mb-1">Webhook URL / API Endpoint</label>
+                    <input type="text" placeholder="https://..." className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:border-blue-500 focus:bg-white transition-all text-sm font-medium font-mono" />
+                  </div>
+                </div>
+
+                <div className="mt-10 flex gap-4">
+                  <button onClick={() => setIsAddConnectorModalOpen(false)} className="flex-1 py-4 bg-blue-600 hover:bg-blue-700 text-white rounded-2xl font-bold transition-all shadow-lg shadow-blue-200">Save Connector</button>
+                  <button onClick={() => setIsAddConnectorModalOpen(false)} className="flex-1 py-4 bg-slate-50 hover:bg-slate-100 text-slate-600 rounded-2xl font-bold transition-all">Cancel</button>
+                </div>
+              </motion.div>
+            </motion.div>
+          )}
+
           {approvalStep !== 'idle' && (
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-50 flex items-center justify-center p-6 bg-slate-900/40 backdrop-blur-md">
               <motion.div initial={{ scale: 0.95, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.95, opacity: 0 }} className="w-full max-w-lg bg-white rounded-[32px] p-10 shadow-2xl border border-slate-100">
