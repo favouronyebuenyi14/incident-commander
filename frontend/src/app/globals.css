@@ -1,29 +1,26 @@
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-@theme {
-  --color-background: #0a0a0c;
-  --color-foreground: #ededed;
-  --color-primary: #3b82f6;
-  --color-secondary: #1e293b;
-  --color-accent: #60a5fa;
-  --color-muted: #94a3b8;
-  --color-border: #1e293b;
-  --color-incident-red: #ef4444;
-  --color-incident-yellow: #f59e0b;
-  --color-incident-green: #10b981;
-
-  --font-sans: "Inter", system-ui, -apple-system, sans-serif;
-}
-
-:root {
-  --background: #0a0a0c;
-  --foreground: #ededed;
+@layer base {
+  :root {
+    --background: #0a0a0c;
+    --foreground: #ededed;
+    --primary: #3b82f6;
+    --secondary: #1e293b;
+    --accent: #60a5fa;
+    --muted: #94a3b8;
+    --border: #1e293b;
+    --incident-red: #ef4444;
+    --incident-yellow: #f59e0b;
+    --incident-green: #10b981;
+  }
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-sans);
+  font-family: "Inter", system-ui, -apple-system, sans-serif;
 }
 
 .glass {
