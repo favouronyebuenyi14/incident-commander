@@ -128,6 +128,7 @@ export default function IncidentCommander() {
 
   return (
     <div className="flex h-screen bg-[#0a0a0c] text-slate-200 overflow-hidden">
+      {/* Sidebar */}
       <div className="w-20 lg:w-64 border-r border-slate-800/50 flex flex-col bg-[#0d0d0f]">
         <div className="p-6 flex items-center gap-3">
           <div className="p-2 bg-blue-600 rounded-lg glow-blue">
@@ -154,10 +155,12 @@ export default function IncidentCommander() {
         </div>
       </div>
 
+      {/* Main Content Area */}
       <main className="flex-1 flex flex-col overflow-hidden relative">
         <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-blue-600/5 blur-[120px] -z-10 pointer-events-none" />
         <div className="absolute bottom-0 left-0 w-[300px] h-[300px] bg-purple-600/5 blur-[100px] -z-10 pointer-events-none" />
 
+        {/* Header */}
         <header className="h-20 border-b border-slate-800/50 flex items-center justify-between px-8 bg-[#0a0a0c]/80 backdrop-blur-md sticky top-0 z-10">
           <div className="flex items-center gap-4">
             <div className="px-3 py-1 bg-red-500/10 border border-red-500/20 rounded-full flex items-center gap-2">
@@ -169,184 +172,232 @@ export default function IncidentCommander() {
 
           <div className="flex items-center gap-4">
             <button onClick={handleSlackSync} className="px-4 py-2 bg-slate-800/50 hover:bg-slate-800 border border-slate-700/50 rounded-lg text-sm transition-colors flex items-center gap-2">
-                <MessageSquare size={16} />
-                Slack Sync
+              <MessageSquare size={16} />
+              Slack Sync
             </button>
             <button onClick={handleResolve} className="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-lg text-sm font-medium transition-all glow-blue">
-                Resolve Incident
+              Resolve Incident
             </button>
           </div>
         </header>
 
-        {currentView === 'dashboard' && (
-        <>
-        <div className="px-8 border-b border-slate-800/50 flex gap-8 bg-[#0a0a0c]/50 backdrop-blur-sm">
-          {['overview', 'analysis', 'logs'].map(tab => (
-            <button 
-              key={tab}
-              onClick={() => setActiveTab(tab)}
-              className={`py-4 text-sm font-medium transition-colors border-b-2 capitalize ${
-                activeTab === tab ? 'border-blue-500 text-blue-500' : 'border-transparent text-slate-500 hover:text-slate-300'
-              }`}
-            >
-              {tab}
-            </button>
-          ))}
-          {/* Button to jump to analysis from any view */}
-          <button onClick={() => { setCurrentView('dashboard'); setActiveTab('analysis'); }} className="ml-4 px-3 py-1 bg-slate-700 hover:bg-slate-600 text-sm rounded">
-            View Analysis
-          </button>        </div>
-
-        <div className="flex-1 overflow-y-auto p-8 space-y-8">
-          {activeTab === 'overview' && (
-            <div className="space-y-8">
-              <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                <div className="lg:col-span-2 glass rounded-2xl p-6">
-                  <div className="flex items-center justify-between mb-6">
-                    <h3 className="text-sm font-medium text-slate-400 flex items-center gap-2">
-                      <Activity size={16} /> System Latency (P99)
-                    </h3>
-                  </div>
-                  <div className="h-64">
-                    <ResponsiveContainer width="100%" height="100%">
-                      <AreaChart data={mockMetrics}>
-                        <defs>
-                          <linearGradient id="colorValue" x1="0" y1="0" x2="0" y2="1">
-                            <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.3}/>
-                            <stop offset="95%" stopColor="#3b82f6" stopOpacity={0}/>
-                          </linearGradient>
-                        </defs>
-                        <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" vertical={false} />
-                        <XAxis dataKey="time" stroke="#475569" fontSize={12} tickLine={false} axisLine={false} />
-                        <YAxis stroke="#475569" fontSize={12} tickLine={false} axisLine={false} />
-                        <Tooltip 
-                          contentStyle={{ backgroundColor: '#0d0d0f', border: '1px solid #1e293b', borderRadius: '8px' }}
-                          itemStyle={{ color: '#3b82f6' }}
-                        />
-                        <Area type="monotone" dataKey="value" stroke="#3b82f6" strokeWidth={2} fillOpacity={1} fill="url(#colorValue)" />
-                      </AreaChart>
-                    </ResponsiveContainer>
-                  </div>
-                </div>
-
-                <div className="glass rounded-2xl p-6 flex flex-col">
-                  <h3 className="text-sm font-medium text-slate-400 mb-6 flex items-center gap-2">
-                    <Cpu size={16} /> Agent Status
-                  </h3>
-                  <div className="flex-1 flex flex-col justify-center items-center space-y-4">
-                    <div className="relative">
-                      <div className="w-24 h-24 rounded-full border-4 border-blue-600/20 flex items-center justify-center">
-                        <div className="w-16 h-16 rounded-full border-4 border-blue-600 border-t-transparent animate-spin" />
-                      </div>
-                      <div className="absolute inset-0 flex items-center justify-center">
-                        <Database size={24} className="text-blue-500" />
-                      </div>
-                    </div>
-                    <p className="text-sm font-medium text-slate-200 capitalize">{status}...</p>
-                  </div>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                <div className="glass rounded-2xl p-6 overflow-hidden flex flex-col">
-                  <h3 className="text-sm font-medium text-slate-400 mb-6 flex items-center gap-2">
-                    <History size={16} /> Live Incident Timeline
-                  </h3>
-                  <div className="space-y-6 flex-1 overflow-y-auto pr-2">
-                    {timeline.map((item) => (
-                      <div key={item.id} className="flex gap-4 relative group">
-                        <div className="flex flex-col items-center">
-                          <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
-                            item.status === 'critical' ? 'bg-red-500/20 text-red-500' :
-                            item.status === 'action' ? 'bg-blue-500/20 text-blue-500' :
-                            'bg-slate-800 text-slate-400'
-                          } z-10`}>
-                            {item.status === 'critical' ? <AlertTriangle size={14} /> : 
-                             item.status === 'action' ? <CheckCircle size={14} /> : 
-                             <ChevronRight size={14} />}
-                          </div>
-                          <div className="w-0.5 h-full bg-slate-800 mt-2" />
-                        </div>
-                        <div className="pb-6">
-                          <div className="flex items-center gap-2 mb-1">
-                            <span className="text-[10px] font-bold text-slate-500 uppercase">{item.time}</span>
-                            <span className={`text-[10px] font-bold uppercase ${
-                              item.type === 'agent' ? 'text-blue-400' : 'text-slate-400'
-                            }`}>{item.type}</span>
-                          </div>
-                          <p className="text-sm text-slate-300 leading-relaxed">{item.message}</p>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                <div className="space-y-6">
-                  <h3 className="text-sm font-medium text-slate-400 flex items-center gap-2">
-                    <Play size={16} /> Recommended Actions
-                  </h3>
-                  <motion.div 
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="p-6 rounded-2xl bg-gradient-to-br from-blue-600/20 to-purple-600/10 border border-blue-500/30 glow-blue"
+        {/* View Switcher */}
+        <div className="flex-1 flex flex-col overflow-hidden">
+          {currentView === 'dashboard' ? (
+            <>
+              <div className="px-8 border-b border-slate-800/50 flex gap-8 bg-[#0a0a0c]/50 backdrop-blur-sm">
+                {['overview', 'analysis', 'logs'].map(tab => (
+                  <button 
+                    key={tab}
+                    onClick={() => setActiveTab(tab)}
+                    className={`py-4 text-sm font-medium transition-colors border-b-2 capitalize ${
+                      activeTab === tab ? 'border-blue-500 text-blue-500' : 'border-transparent text-slate-500 hover:text-slate-300'
+                    }`}
                   >
-                    <h4 className="text-lg font-semibold text-slate-100 mb-2">Rollback to v1.2.3</h4>
-                    <p className="text-sm text-slate-400 mb-6">Memory leak detected. Reverting recommended.</p>
-                    <div className="flex gap-3">
-                      <button 
-                        onClick={() => startApproval({ label: 'Rollback to v1.2.3' })}
-                        className="flex-1 py-3 bg-blue-600 hover:bg-blue-500 text-white rounded-xl font-medium transition-all"
-                      >
-                        Approve & Execute
-                      </button>
+                    {tab}
+                  </button>
+                ))}
+              </div>
+
+              <div className="flex-1 overflow-y-auto p-8 space-y-8">
+                {activeTab === 'overview' && (
+                  <div className="space-y-8">
+                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                      <div className="lg:col-span-2 glass rounded-2xl p-6">
+                        <h3 className="text-sm font-medium text-slate-400 mb-6 flex items-center gap-2">
+                          <Activity size={16} /> System Latency (P99)
+                        </h3>
+                        <div className="h-64">
+                          <ResponsiveContainer width="100%" height="100%">
+                            <AreaChart data={mockMetrics}>
+                              <defs>
+                                <linearGradient id="colorValue" x1="0" y1="0" x2="0" y2="1">
+                                  <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.3}/>
+                                  <stop offset="95%" stopColor="#3b82f6" stopOpacity={0}/>
+                                </linearGradient>
+                              </defs>
+                              <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" vertical={false} />
+                              <XAxis dataKey="time" stroke="#475569" fontSize={12} tickLine={false} axisLine={false} />
+                              <YAxis stroke="#475569" fontSize={12} tickLine={false} axisLine={false} />
+                              <Tooltip 
+                                contentStyle={{ backgroundColor: '#0d0d0f', border: '1px solid #1e293b', borderRadius: '8px' }}
+                                itemStyle={{ color: '#3b82f6' }}
+                              />
+                              <Area type="monotone" dataKey="value" stroke="#3b82f6" strokeWidth={2} fillOpacity={1} fill="url(#colorValue)" />
+                            </AreaChart>
+                          </ResponsiveContainer>
+                        </div>
+                      </div>
+
+                      <div className="glass rounded-2xl p-6 flex flex-col">
+                        <h3 className="text-sm font-medium text-slate-400 mb-6 flex items-center gap-2">
+                          <Cpu size={16} /> Agent Status
+                        </h3>
+                        <div className="flex-1 flex flex-col justify-center items-center space-y-4">
+                          <div className="relative">
+                            <div className="w-24 h-24 rounded-full border-4 border-blue-600/20 flex items-center justify-center">
+                              <div className="w-16 h-16 rounded-full border-4 border-blue-600 border-t-transparent animate-spin" />
+                            </div>
+                            <div className="absolute inset-0 flex items-center justify-center">
+                              <Database size={24} className="text-blue-500" />
+                            </div>
+                          </div>
+                          <p className="text-sm font-medium text-slate-200 capitalize">{status}...</p>
+                        </div>
+                      </div>
                     </div>
-                  </motion.div>
 
-                  <div className="p-6 rounded-2xl glass border-slate-800/50">
-                    <h4 className="text-base font-semibold text-slate-100 mb-1">Scale Redis Cluster</h4>
-                    <p className="text-xs text-slate-500 mb-4">Memory usage at 94%. Scaling vertically.</p>
-                    <button className="w-full py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg text-sm border border-slate-700/50">
-                      View Analysis
-                    </button>
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                      <div className="glass rounded-2xl p-6 overflow-hidden flex flex-col">
+                        <h3 className="text-sm font-medium text-slate-400 mb-6 flex items-center gap-2">
+                          <History size={16} /> Live Incident Timeline
+                        </h3>
+                        <div className="space-y-6 flex-1 overflow-y-auto pr-2">
+                          {timeline.map((item) => (
+                            <div key={item.id} className="flex gap-4 relative group">
+                              <div className="flex flex-col items-center">
+                                <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
+                                  item.status === 'critical' ? 'bg-red-500/20 text-red-500' :
+                                  item.status === 'action' ? 'bg-blue-500/20 text-blue-500' :
+                                  'bg-slate-800 text-slate-400'
+                                } z-10`}>
+                                  {item.status === 'critical' ? <AlertTriangle size={14} /> : 
+                                   item.status === 'action' ? <CheckCircle size={14} /> : 
+                                   <ChevronRight size={14} />}
+                                </div>
+                                <div className="w-0.5 h-full bg-slate-800 mt-2" />
+                              </div>
+                              <div className="pb-6">
+                                <div className="flex items-center gap-2 mb-1">
+                                  <span className="text-[10px] font-bold text-slate-500 uppercase">{item.time}</span>
+                                  <span className={`text-[10px] font-bold uppercase ${
+                                    item.type === 'agent' ? 'text-blue-400' : 'text-slate-400'
+                                  }`}>{item.type}</span>
+                                </div>
+                                <p className="text-sm text-slate-300 leading-relaxed">{item.message}</p>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+
+                      <div className="space-y-6">
+                        <h3 className="text-sm font-medium text-slate-400 flex items-center gap-2">
+                          <Play size={16} /> Recommended Actions
+                        </h3>
+                        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="p-6 rounded-2xl bg-gradient-to-br from-blue-600/20 to-purple-600/10 border border-blue-500/30 glow-blue">
+                          <h4 className="text-lg font-semibold text-slate-100 mb-2">Rollback to v1.2.3</h4>
+                          <p className="text-sm text-slate-400 mb-6">Memory leak detected. Reverting recommended.</p>
+                          <button onClick={() => startApproval({ label: 'Rollback to v1.2.3' })} className="w-full py-3 bg-blue-600 hover:bg-blue-500 text-white rounded-xl font-medium transition-all">
+                            Approve & Execute
+                          </button>
+                        </motion.div>
+
+                        <div className="p-6 rounded-2xl glass border-slate-800/50">
+                          <h4 className="text-base font-semibold text-slate-100 mb-1">Scale Redis Cluster</h4>
+                          <p className="text-xs text-slate-500 mb-4">Memory usage at 94%. Scaling vertically.</p>
+                          <button onClick={() => setActiveTab('analysis')} className="w-full py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg text-sm border border-slate-700/50">
+                            View Analysis
+                          </button>
+                        </div>
+                      </div>
+                    </div>
                   </div>
+                )}
+
+                {activeTab === 'analysis' && (
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <div className="glass rounded-2xl p-8 space-y-6">
+                      <h3 className="text-xl font-bold flex items-center gap-3">
+                        <Database className="text-blue-500" /> Root Cause Analysis
+                      </h3>
+                      <div className="p-4 bg-blue-500/5 border border-blue-500/20 rounded-xl">
+                        <p className="text-slate-200 leading-relaxed">Detected anomalous spike in database connection wait times.</p>
+                      </div>
+                      <div className="space-y-4">
+                        <ReasoningStep step="1" text="Identified 503 errors in api-gateway logs." />
+                        <ReasoningStep step="2" text="Correlated error timing with deployment." />
+                      </div>
+                    </div>
+                    <div className="glass rounded-2xl p-8 overflow-hidden">
+                      <h3 className="text-xl font-bold flex items-center gap-3 mb-6">
+                        <Terminal className="text-slate-500" /> Raw Telemetry
+                      </h3>
+                      <div className="bg-slate-950 rounded-xl p-4 font-mono text-xs overflow-x-auto text-slate-400 border border-slate-900">
+                        <p className="text-blue-500">// Datadog Query</p>
+                        <p>[16:20:00] 12.4% idle (Critical)</p>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {activeTab === 'logs' && (
+                  <div className="glass rounded-2xl p-8 text-center text-slate-500 animate-pulse">
+                    Select an incident to view deep-dive logs.
+                  </div>
+                )}
+              </div>
+            </>
+          ) : currentView === 'history' ? (
+            <div className="p-8 space-y-6 overflow-y-auto flex-1">
+              <h2 className="text-2xl font-bold text-slate-200">Incident History</h2>
+              <div className="space-y-4">
+                <div className="bg-slate-800/50 p-6 rounded-2xl border border-slate-700/30">
+                  <div className="flex justify-between items-center mb-2">
+                    <span className="font-bold text-slate-100">INC-2024-0501: DB Latency</span>
+                    <span className="px-2 py-1 bg-green-500/10 text-green-500 text-[10px] font-bold rounded uppercase">Resolved</span>
+                  </div>
+                  <p className="text-sm text-slate-400">Database latency spike resolved by scaling connection pool. Downtime: 4m.</p>
+                </div>
+                <div className="bg-slate-800/50 p-6 rounded-2xl border border-slate-700/30">
+                  <div className="flex justify-between items-center mb-2">
+                    <span className="font-bold text-slate-100">INC-2024-0489: Auth Failure</span>
+                    <span className="px-2 py-1 bg-green-500/10 text-green-500 text-[10px] font-bold rounded uppercase">Resolved</span>
+                  </div>
+                  <p className="text-sm text-slate-400">High error rate in auth service mitigated via rollback to v1.2.2.</p>
                 </div>
               </div>
             </div>
-          )}
-
-          {activeTab === 'analysis' && (
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-              <div className="glass rounded-2xl p-8 space-y-6">
-                <h3 className="text-xl font-bold flex items-center gap-3">
-                  <Database className="text-blue-500" /> Root Cause Analysis
-                </h3>
-                <div className="p-4 bg-blue-500/5 border border-blue-500/20 rounded-xl">
-                  <p className="text-slate-200 leading-relaxed">Detected anomalous spike in database connection wait times.</p>
-                </div>
-                <div className="space-y-4">
-                  <ReasoningStep step="1" text="Identified 503 errors in api-gateway logs." />
-                  <ReasoningStep step="2" text="Correlated error timing with deployment." />
-                </div>
-              </div>
-              <div className="glass rounded-2xl p-8 overflow-hidden">
-                <h3 className="text-xl font-bold flex items-center gap-3 mb-6">
-                  <Terminal className="text-slate-500" /> Raw Telemetry
-                </h3>
-                <div className="bg-slate-950 rounded-xl p-4 font-mono text-xs overflow-x-auto text-slate-400 border border-slate-900">
-                  <p className="text-blue-500">// Datadog Query</p>
-                  <p>[16:20:00] 12.4% idle (Critical)</p>
-                </div>
+          ) : currentView === 'integrations' ? (
+            <div className="p-8 space-y-6 overflow-y-auto flex-1">
+              <h2 className="text-2xl font-bold text-slate-200">System Integrations</h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+                {[
+                  { name: 'Datadog', icon: <Database />, color: 'text-blue-500' },
+                  { name: 'Kubernetes', icon: <Cpu />, color: 'text-purple-500' },
+                  { name: 'PagerDuty', icon: <Shield />, color: 'text-green-500' },
+                  { name: 'Slack', icon: <MessageSquare />, color: 'text-yellow-500' }
+                ].map(tool => (
+                  <div key={tool.name} className="glass rounded-2xl p-6 flex items-center gap-4 hover:border-slate-600/50 transition-colors cursor-pointer">
+                    <div className={`p-3 bg-slate-900 rounded-xl ${tool.color}`}>
+                      {React.cloneElement(tool.icon as React.ReactElement, { size: 24 })}
+                    </div>
+                    <div>
+                      <p className="font-bold text-slate-100">{tool.name}</p>
+                      <p className="text-xs text-slate-500">Connected & Synced</p>
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
-          )}
-
-          {activeTab === 'logs' && (
-            <div className="glass rounded-2xl p-8 text-center text-slate-500 animate-pulse">
-              Select an incident to view deep-dive logs.
+          ) : (
+            <div className="p-8 space-y-6 overflow-y-auto flex-1">
+              <h2 className="text-2xl font-bold text-slate-200 flex items-center gap-3">
+                <Terminal size={24} className="text-slate-500" /> System Console
+              </h2>
+              <div className="bg-slate-950 rounded-2xl p-6 font-mono text-xs border border-slate-800 shadow-2xl h-[500px] overflow-y-auto">
+                <p className="text-blue-500 mb-2">// AI Agent Reasoning Logs</p>
+                <p className="text-slate-400 mb-1">[16:20:01] INFO: Commander initialized</p>
+                <p className="text-slate-400 mb-1">[16:20:05] DEBUG: Fetching Datadog metrics for service: api-gateway</p>
+                <p className="text-yellow-500 mb-1">[16:21:12] WARN: High wait time detected on RDS instance rds-prod-01</p>
+                <p className="text-blue-500 mb-1">[16:22:45] AGENT: Suggesting vertical scale-up of Redis cluster</p>
+                <p className="text-slate-500 animate-pulse mt-4">_</p>
+              </div>
             </div>
           )}
         </div>
 
+        {/* Approval Modal */}
         <AnimatePresence>
           {approvalStep !== 'idle' && (
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-50 flex items-center justify-center p-6 bg-black/60 backdrop-blur-sm">
@@ -374,77 +425,6 @@ export default function IncidentCommander() {
               </motion.div>
             </motion.div>
           )}
-
-          {/* Main view switch */}
-          {currentView === 'dashboard' && (
-            <>{/* existing dashboard content stays here – nothing to change */}</>
-          )}
-          {currentView === 'history' && (
-            <div className="p-8 space-y-6">
-              <h2 className="text-2xl font-bold text-slate-200">Incident History</h2>
-              <ul className="space-y-4">
-                {/* Mock history items – replace with real data later */}
-                <li className="bg-slate-800/50 p-4 rounded-lg">
-                  <div className="flex justify-between items-center">
-                    <span className="font-medium text-slate-100">INC-2024-0501</span>
-                    <span className="text-xs text-slate-400">Resolved</span>
-                  </div>
-                  <p className="text-sm text-slate-400 mt-1">Database latency spike resolved by scaling.</p>
-                </li>
-                <li className="bg-slate-800/50 p-4 rounded-lg">
-                  <div className="flex justify-between items-center">
-                    <span className="font-medium text-slate-100">INC-2024-0489</span>
-                    <span className="text-xs text-slate-400">Resolved</span>
-                  </div>
-                  <p className="text-sm text-slate-400 mt-1">High error rate in auth service mitigated.</p>
-                </li>
-              </ul>
-            </div>
-          )}
-          {currentView === 'integrations' && (
-            <div className="p-8 space-y-6">
-              <h2 className="text-2xl font-bold text-slate-200">Integrations</h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="glass rounded-xl p-6 flex items-center gap-4">
-                  <Database size={24} className="text-blue-500" />
-                  <div>
-                    <p className="font-medium text-slate-100">Datadog</p>
-                    <p className="text-xs text-slate-400">Connected</p>
-                  </div>
-                </div>
-                <div className="glass rounded-xl p-6 flex items-center gap-4">
-                  <Cpu size={24} className="text-purple-500" />
-                  <div>
-                    <p className="font-medium text-slate-100">Kubernetes</p>
-                    <p className="text-xs text-slate-400">Connected</p>
-                  </div>
-                </div>
-                <div className="glass rounded-xl p-6 flex items-center gap-4">
-                  <Shield size={24} className="text-green-500" />
-                  <div>
-                    <p className="font-medium text-slate-100">PagerDuty</p>
-                    <p className="text-xs text-slate-400">Connected</p>
-                  </div>
-                </div>
-                <div className="glass rounded-xl p-6 flex items-center gap-4">
-                  <MessageSquare size={24} className="text-yellow-500" />
-                  <div>
-                    <p className="font-medium text-slate-100">Slack</p>
-                    <p className="text-xs text-slate-400">Synced</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
-          {currentView === 'console' && (
-            <div className="p-8 space-y-6">
-              <h2 className="text-2xl font-bold text-slate-200">Console</h2>
-              <pre className="bg-slate-900/60 p-4 rounded-lg text-xs overflow-x-auto text-slate-300 border border-slate-800">
-                {`> Loading agent logs...\n[12:00:01] Agent initialized\n[12:00:05] Fetching incident data...\n[12:00:07] Incident data loaded\n[12:00:12] Running safety checks...\n[12:00:14] Checks passed. Ready for action.`}
-              </pre>
-            </div>
-          )}
-        </AnimatePresence>
         </AnimatePresence>
       </main>
     </div>
