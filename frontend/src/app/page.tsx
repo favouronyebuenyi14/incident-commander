@@ -50,7 +50,7 @@ export default function IncidentCommander() {
   const [activeTab, setActiveTab] = useState('overview');
   const [status, setStatus] = useState('investigating');
   const [timeline, setTimeline] = useState(mockTimeline);
-  const [selectedAction, setSelectedAction] = useState(null);
+  const [selectedAction, setSelectedAction] = useState<{ label: string } | null>(null);
   const [approvalStep, setApprovalStep] = useState('idle');
 
   const startApproval = (action: any) => {
